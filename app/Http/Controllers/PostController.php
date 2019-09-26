@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use App\Category;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -14,7 +15,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+      $cars = Post::latest()->paginate(5);
+      return view('posts.index',compact('cars'));
     }
 
     /**
@@ -24,7 +26,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::pluck('name','id')->all();
+        return view('posts.create',compact('categories'));
     }
 
     /**
@@ -35,7 +38,15 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $input = $request->all();
+      $input['approved'] = 0;
+      if ($file = $request->file('photo')) {
+          $name = time() . $file->getClientOriginalName();
+          $file->move('cars', $name);
+          $input['photo'] = $name;
+      }
+      Post::create($input);
+      return redirect('/posts');
     }
 
     /**
@@ -55,9 +66,10 @@ class PostController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $post)
+    public function edit($id)
     {
-        //
+        Post::find($id)->update(['approved'=>1]);
+        return redirect()->back();
     }
 
     /**
@@ -78,8 +90,9 @@ class PostController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy($id)
     {
-        //
+          Post::find($id)->delete();
+          return redirect('posts');
     }
 }

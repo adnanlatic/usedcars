@@ -1,6 +1,7 @@
 <?php
 
 use App\Post;
+use App\Category;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,12 +21,14 @@ Route::resource('posts','PostController');
 });
 
 Route::group(['middleware'=>'auth'],function(){
-Route::resource('posts/create','PostController');
+Route::get('posts/create','PostController@create');
+Route::post('posts','PostController@store');
 });
 
 Route::get('/', function () {
-    $cars = Post::where('approved',1)->latest();
-    return view('welcome',compact('cars'));
+    $cars = Post::where('approved',1)->latest()->paginate(6);
+    $categories = Category::latest()->get();
+    return view('welcome',compact('cars','categories'));
 });
 
 Auth::routes();
