@@ -36,14 +36,14 @@
                       @auth
                       @if(auth()->user()->admin)
                       <li class="nav-item">
-                        <a class="nav-link active" href="#">Categories</a>
+                        <a class="nav-link active" href="{{url('category')}}">Categories</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" href="#">Cars</a>
+                        <a class="nav-link" href="{{url('posts')}}">Cars</a>
                       </li>
                       @endif
                       <li class="nav-item">
-                        <a class="nav-link" href="#">Add car</a>
+                        <a class="nav-link" href="{{url('posts/create')}}">Add car</a>
                       </li>
                       @endauth
                     </ul>

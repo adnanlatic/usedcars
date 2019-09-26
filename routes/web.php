@@ -14,8 +14,13 @@ use App\Post;
 
 Route::group(['middleware'=>'admin'],function(){
 
+Route::resource('category','CategoryController');
+Route::resource('posts','PostController');
 
+});
 
+Route::group(['middleware'=>'auth'],function(){
+Route::resource('posts/create','PostController');
 });
 
 Route::get('/', function () {

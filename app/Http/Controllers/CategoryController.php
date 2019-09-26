@@ -23,7 +23,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::latest()->get();
+        return view('category.index',compact('categories'));
     }
 
     /**
@@ -33,7 +34,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('category.create');
     }
 
     /**
@@ -44,7 +45,8 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Category::create($request->all());
+        return redirect('category');
     }
 
     /**
@@ -64,9 +66,10 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit($id)
     {
-        //
+      $category = Category::find($id);
+      return view('category.edit',compact('category'));
     }
 
     /**
@@ -76,9 +79,10 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
-        //
+        Category::find($id)->update(['name'=>$request->name]);
+        return redirect('category');
     }
 
     /**
