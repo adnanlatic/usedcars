@@ -1,5 +1,6 @@
 <?php
 
+use App\Post;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,14 +14,13 @@
 
 Route::group(['middleware'=>'admin'],function(){
 
-    
+
 
 });
 
 Route::get('/', function () {
-    return view('welcome');
+    $cars = Post::where('approved',1)->latest();
+    return view('welcome',compact('cars'));
 });
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
